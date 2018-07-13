@@ -9,7 +9,7 @@ import java.io.IOException;
 @Controller(dir = "demo-web",packageName = "org.zj.controller")
 @Dao(dir = "demo-dao",packageName = "org.zj.dao")
 @Bean(dir = "demo-bean",packageName = "org.zj.bean")
-@ParentProject(version = "1.0-SNAPSHOT",name = "bilibili",artifactId = "com.czxy")
+@ParentProject(version = "1.0-SNAPSHOT",name = "ProjectEvorimentIniter",artifactId = "org.zj")
 @DataSource(username = "root",password = "",url="jdbc:mysql://localhost:3306/bilibili",driver = "com.mysql.jdbc.Driver")
 public class Config {
     public static void main(String[] args) throws IOException {

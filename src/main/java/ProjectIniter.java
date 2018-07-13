@@ -337,7 +337,7 @@ String webIniter;
             Document read = null;
             try {
                 read = reader.read(file);
-            } catch (MalformedURLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -357,7 +357,7 @@ String webIniter;
                 e.printStackTrace();
             }
 
-        } catch (DocumentException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

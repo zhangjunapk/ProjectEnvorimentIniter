@@ -1,264 +1,258 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.zj</groupId>
-  <artifactId>ProjectEvorimentIniter</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <!-- 缁熶竴鐗堟湰缁存姢 -->
-  <properties>
-    <mysql.version>5.1.22</mysql.version>
-    <druid.version>1.0.31</druid.version>
-    <mybatis.version>3.4.5</mybatis.version>
-    <mybatis.spring.version>1.3.2</mybatis.spring.version>
-    <spring.version>4.2.4.RELEASE</spring.version>
-    <servlet.version>3.1.0</servlet.version>
-    <jsp.version>2.1</jsp.version>
-    <jstl.version>1.2</jstl.version>
-    <junit.version>4.9</junit.version>
-    <pagehepler.version>3.7.5</pagehepler.version>
-    <mapper.version>3.5.3</mapper.version>
-    <jackson.verson>2.8.4</jackson.verson>
-  </properties>
-
-
-  <!-- 閿佸畾鐗堟湰 -->
-  <dependencyManagement>
-    <dependencies>
-      <!-- 鏁版嵁搴撻┍鍔?-->
-      <dependency>
-        <groupId>mysql</groupId>
-        <artifactId>mysql-connector-java</artifactId>
-        <version>${mysql.version}</version>
-      </dependency>
-
-      <!-- 寰烽瞾浼婅繛鎺ユ睜 -->
-      <dependency>
-        <groupId>com.alibaba</groupId>
-        <artifactId>druid</artifactId>
-        <version>${druid.version}</version>
-      </dependency>
-
-      <!-- mybatis锛氭牳蹇冦€佷笌spring鏁村悎 -->
-      <dependency>
-        <groupId>org.mybatis</groupId>
-        <artifactId>mybatis</artifactId>
-        <version>${mybatis.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mybatis</groupId>
-        <artifactId>mybatis-spring</artifactId>
-        <version>${mybatis.spring.version}</version>
-      </dependency>
-
-      <!-- spring -->
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-aspects</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-jdbc</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-test</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-
-      <!-- spring mvc -->
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-
-
-      <!-- servlet/jsp/jstl -->
-      <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>${servlet.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>javax.servlet.jsp</groupId>
-        <artifactId>jsp-api</artifactId>
-        <version>${jsp.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>jstl</artifactId>
-        <version>${jstl.version}</version>
-      </dependency>
-
-      <!-- Junit -->
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${junit.version}</version>
-      </dependency>
-
-      <!-- 鍒嗛〉鍔╂墜銆侀€氱敤mapper  -->
-      <dependency>
-        <groupId>com.github.pagehelper</groupId>
-        <artifactId>pagehelper</artifactId>
-        <version>${pagehepler.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>tk.mybatis</groupId>
-        <artifactId>mapper</artifactId>
-        <version>${mapper.version}</version>
-      </dependency>
-
-      <!-- spring mvc 搴曞眰浣跨敤 jackson 杩涜瀵硅薄涓巎son杞崲 -->
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>${jackson.verson}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${jackson.verson}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
-
-  <!-- 浣跨敤鐗堟湰 -->
-  <dependencies>
-    <!-- 鏁版嵁搴撻┍鍔?-->
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-    </dependency>
-
-    <!-- 寰烽瞾浼婅繛鎺ユ睜 -->
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>druid</artifactId>
-    </dependency>
-
-    <!-- mybatis锛氭牳蹇冦€佷笌spring鏁村悎 -->
-    <dependency>
-      <groupId>org.mybatis</groupId>
-      <artifactId>mybatis</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mybatis</groupId>
-      <artifactId>mybatis-spring</artifactId>
-    </dependency>
-
-    <!-- spring -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-aspects</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-    </dependency>
-
-    <!-- spring mvc -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-webmvc</artifactId>
-    </dependency>
-
-
-    <!-- servlet/jsp/jstl -->
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet.jsp</groupId>
-      <artifactId>jsp-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jstl</artifactId>
-    </dependency>
-
-    <!-- Junit -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-
-    <!-- 鍒嗛〉鍔╂墜銆侀€氱敤mapper  -->
-    <dependency>
-      <groupId>com.github.pagehelper</groupId>
-      <artifactId>pagehelper</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>tk.mybatis</groupId>
-      <artifactId>mapper</artifactId>
-    </dependency>
-
-    <!-- spring mvc 搴曞眰浣跨敤 jackson 杩涜瀵硅薄涓巎son杞崲 -->
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-    </dependency>
-  </dependencies>
-
-
-  <build>
-    <plugins>
-      <!-- 涓㈠けweb.xml -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>3.0.0</version>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-        </configuration>
-      </plugin>
-      <!-- JDK鐗堟湰 -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-      <!-- tomcat7 -->
-      <plugin>
-        <groupId>org.apache.tomcat.maven</groupId>
-        <artifactId>tomcat7-maven-plugin</artifactId>
-        <version>2.2</version>
-        <configuration>
-          <path>/</path>
-          <port>8080</port>
-        </configuration>
-      </plugin>
-    </plugins>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>org.zj</groupId>  
+  <artifactId>ProjectEvorimentIniter</artifactId>  
+  <version>1.0-SNAPSHOT</version>  
+  <!-- 缁熶竴鐗堟湰缁存姢 -->  
+  <properties> 
+    <mysql.version>5.1.22</mysql.version>  
+    <druid.version>1.0.31</druid.version>  
+    <mybatis.version>3.4.5</mybatis.version>  
+    <mybatis.spring.version>1.3.2</mybatis.spring.version>  
+    <spring.version>4.2.4.RELEASE</spring.version>  
+    <servlet.version>3.1.0</servlet.version>  
+    <jsp.version>2.1</jsp.version>  
+    <jstl.version>1.2</jstl.version>  
+    <junit.version>4.9</junit.version>  
+    <pagehepler.version>3.7.5</pagehepler.version>  
+    <mapper.version>3.5.3</mapper.version>  
+    <jackson.verson>2.8.4</jackson.verson> 
+  </properties>  
+  <!-- 閿佸畾鐗堟湰 -->  
+  <dependencyManagement> 
+    <dependencies> 
+      <!-- 鏁版嵁搴撻┍鍔?-->  
+      <dependency> 
+        <groupId>mysql</groupId>  
+        <artifactId>mysql-connector-java</artifactId>  
+        <version>${mysql.version}</version> 
+      </dependency>  
+      <!-- 寰烽瞾浼婅繛鎺ユ睜 -->  
+      <dependency> 
+        <groupId>com.alibaba</groupId>  
+        <artifactId>druid</artifactId>  
+        <version>${druid.version}</version> 
+      </dependency>  
+      <!-- mybatis锛氭牳蹇冦€佷笌spring鏁村悎 -->  
+      <dependency> 
+        <groupId>org.mybatis</groupId>  
+        <artifactId>mybatis</artifactId>  
+        <version>${mybatis.version}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.mybatis</groupId>  
+        <artifactId>mybatis-spring</artifactId>  
+        <version>${mybatis.spring.version}</version> 
+      </dependency>  
+      <!-- spring -->  
+      <dependency> 
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-context</artifactId>  
+        <version>${spring.version}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-aspects</artifactId>  
+        <version>${spring.version}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-jdbc</artifactId>  
+        <version>${spring.version}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-test</artifactId>  
+        <version>${spring.version}</version> 
+      </dependency>  
+      <!-- spring mvc -->  
+      <dependency> 
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-webmvc</artifactId>  
+        <version>${spring.version}</version> 
+      </dependency>  
+      <!-- servlet/jsp/jstl -->  
+      <dependency> 
+        <groupId>javax.servlet</groupId>  
+        <artifactId>javax.servlet-api</artifactId>  
+        <version>${servlet.version}</version>  
+        <scope>provided</scope> 
+      </dependency>  
+      <dependency> 
+        <groupId>javax.servlet.jsp</groupId>  
+        <artifactId>jsp-api</artifactId>  
+        <version>${jsp.version}</version>  
+        <scope>provided</scope> 
+      </dependency>  
+      <dependency> 
+        <groupId>javax.servlet</groupId>  
+        <artifactId>jstl</artifactId>  
+        <version>${jstl.version}</version> 
+      </dependency>  
+      <!-- Junit -->  
+      <dependency> 
+        <groupId>junit</groupId>  
+        <artifactId>junit</artifactId>  
+        <version>${junit.version}</version> 
+      </dependency>  
+      <!-- 鍒嗛〉鍔╂墜銆侀€氱敤mapper  -->  
+      <dependency> 
+        <groupId>com.github.pagehelper</groupId>  
+        <artifactId>pagehelper</artifactId>  
+        <version>${pagehepler.version}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>tk.mybatis</groupId>  
+        <artifactId>mapper</artifactId>  
+        <version>${mapper.version}</version> 
+      </dependency>  
+      <!-- spring mvc 搴曞眰浣跨敤 jackson 杩涜瀵硅薄涓巎son杞崲 -->  
+      <dependency> 
+        <groupId>com.fasterxml.jackson.core</groupId>  
+        <artifactId>jackson-core</artifactId>  
+        <version>${jackson.verson}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>com.fasterxml.jackson.core</groupId>  
+        <artifactId>jackson-databind</artifactId>  
+        <version>${jackson.verson}</version> 
+      </dependency> 
+    </dependencies> 
+  </dependencyManagement>  
+  <!-- 浣跨敤鐗堟湰 -->  
+  <dependencies> 
+    <!-- 鏁版嵁搴撻┍鍔?-->  
+    <dependency> 
+      <groupId>mysql</groupId>  
+      <artifactId>mysql-connector-java</artifactId> 
+    </dependency>  
+    <!-- 寰烽瞾浼婅繛鎺ユ睜 -->  
+    <dependency> 
+      <groupId>com.alibaba</groupId>  
+      <artifactId>druid</artifactId> 
+    </dependency>  
+    <!-- mybatis锛氭牳蹇冦€佷笌spring鏁村悎 -->  
+    <dependency> 
+      <groupId>org.mybatis</groupId>  
+      <artifactId>mybatis</artifactId> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.mybatis</groupId>  
+      <artifactId>mybatis-spring</artifactId> 
+    </dependency>  
+    <!-- spring -->  
+    <dependency> 
+      <groupId>org.springframework</groupId>  
+      <artifactId>spring-context</artifactId> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.springframework</groupId>  
+      <artifactId>spring-aspects</artifactId> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.springframework</groupId>  
+      <artifactId>spring-jdbc</artifactId> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.springframework</groupId>  
+      <artifactId>spring-test</artifactId> 
+    </dependency>  
+    <!-- spring mvc -->  
+    <dependency> 
+      <groupId>org.springframework</groupId>  
+      <artifactId>spring-webmvc</artifactId> 
+    </dependency>  
+    <!-- servlet/jsp/jstl -->  
+    <dependency> 
+      <groupId>javax.servlet</groupId>  
+      <artifactId>javax.servlet-api</artifactId>  
+      <scope>provided</scope> 
+    </dependency>  
+    <dependency> 
+      <groupId>javax.servlet.jsp</groupId>  
+      <artifactId>jsp-api</artifactId>  
+      <scope>provided</scope> 
+    </dependency>  
+    <dependency> 
+      <groupId>javax.servlet</groupId>  
+      <artifactId>jstl</artifactId> 
+    </dependency>  
+    <!-- Junit -->  
+    <dependency> 
+      <groupId>junit</groupId>  
+      <artifactId>junit</artifactId> 
+    </dependency>  
+    <dependency> 
+      <groupId>dom4j</groupId>  
+      <artifactId>dom4j</artifactId>  
+      <version>1.6.1</version> 
+    </dependency>  
+    <dependency> 
+      <groupId>com.alibaba</groupId>  
+      <artifactId>druid</artifactId> 
+    </dependency>  
+    <dependency> 
+      <groupId>mysql</groupId>  
+      <artifactId>mysql-connector-java</artifactId> 
+    </dependency>  
+    <!-- 鍒嗛〉鍔╂墜銆侀€氱敤mapper  -->  
+    <dependency> 
+      <groupId>com.github.pagehelper</groupId>  
+      <artifactId>pagehelper</artifactId> 
+    </dependency>  
+    <dependency> 
+      <groupId>tk.mybatis</groupId>  
+      <artifactId>mapper</artifactId> 
+    </dependency>  
+    <!-- spring mvc 搴曞眰浣跨敤 jackson 杩涜瀵硅薄涓巎son杞崲 -->  
+    <dependency> 
+      <groupId>com.fasterxml.jackson.core</groupId>  
+      <artifactId>jackson-core</artifactId> 
+    </dependency>  
+    <dependency> 
+      <groupId>com.fasterxml.jackson.core</groupId>  
+      <artifactId>jackson-databind</artifactId> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.zj</groupId>  
+      <artifactId>demo-service</artifactId>  
+      <version>1.0-SNAPSHOT</version>  
+      <scope>compile</scope> 
+    </dependency> 
+  </dependencies>  
+  <build> 
+    <plugins> 
+      <!-- 涓㈠けweb.xml -->  
+      <plugin> 
+        <groupId>org.apache.maven.plugins</groupId>  
+        <artifactId>maven-war-plugin</artifactId>  
+        <version>3.0.0</version>  
+        <configuration> 
+          <failOnMissingWebXml>false</failOnMissingWebXml> 
+        </configuration> 
+      </plugin>  
+      <!-- JDK鐗堟湰 -->  
+      <plugin> 
+        <groupId>org.apache.maven.plugins</groupId>  
+        <artifactId>maven-compiler-plugin</artifactId>  
+        <version>3.5.1</version>  
+        <configuration> 
+          <source>1.8</source>  
+          <target>1.8</target> 
+        </configuration> 
+      </plugin>  
+      <!-- tomcat7 -->  
+      <plugin> 
+        <groupId>org.apache.tomcat.maven</groupId>  
+        <artifactId>tomcat7-maven-plugin</artifactId>  
+        <version>2.2</version>  
+        <configuration> 
+          <path>/</path>  
+          <port>8080</port> 
+        </configuration> 
+      </plugin> 
+    </plugins> 
   </build>
-
 </project>

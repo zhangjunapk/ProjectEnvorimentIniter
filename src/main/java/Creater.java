@@ -398,20 +398,59 @@ public Creater artifactId(String name){
 
             setFile(file);
             append(file, "package " + artifactId+"."+projectName + ".controller;\r\n");
+            append(file, "import org.springframework.web.bind.annotation.ResponseBody;\r\n");
+            append(file, "import java.util.List;\r\n");
             append(file,"import org.springframework.stereotype.Controller;\r\n" +
                     "import org.springframework.web.bind.annotation.RequestMapping;\r\n");
+
             append(file,"import org.springframework.beans.factory.annotation.Autowired;\r\n");
             append(file,"import "+artifactId+"."+projectName+".service.I"+toCamelCase(1,str)+"Service;\r\n");
+            append(file,"import "+artifactId+"."+projectName+".bean."+toCamelCase(1,str)+";\r\n");
             append(file, "@Controller \r\n");
             append(file, "@RequestMapping(\"/"+str+"\") \r\n");
             append(file, "public class " + toCamelCase(1, str) + "Controller {\r\n");
             append(file,"@Autowired\r\n");
-            append(file,"I"+toCamelCase(1,str)+"Service "+toCamelCase(0,str)+"Service;\r\n}");
+            append(file,"I"+toCamelCase(1,str)+"Service "+toCamelCase(0,str)+"Service;\r\n");
+
+            //生成删除
+            // TODO: 2018/7/13
+            append(file,"\r\n@ResponseBody\r\n");
+            append(file,"@RequestMapping(\"/delete_"+str+"\")\r\n");
+            for(FieldBean fieldBean:map.get(str).getFieldList()){
+                if(fieldBean.isPrimaryKey){
+                    append(file,"public void delete("+fieldBean.getType()+"[] "+toCamelCase(0,fieldBean.getName())+"s){\r\n");
+                    append(file,toCamelCase(0,str)+"Service.delete("+fieldBean.getName()+"s);\r\n}");
+                }
+            }
+
+
+            append(file,"\r\n@ResponseBody\r\n");
+            append(file,"@RequestMapping(\"/modify_"+str+"\")\r\n");
+            //生成修改
+            append(file,"\r\npublic void update("+toCamelCase(1,str)+" "+toCamelCase(0,str)+"){\r\n");
+            append(file,toCamelCase(0,str)+"Service.update("+toCamelCase(0,str)+");\r\n}");
+
+
+            append(file,"\r\n@ResponseBody\r\n");
+            append(file,"@RequestMapping(\"/get_"+str+"\")\r\n");
+            //生成查询
+            append(file,"\r\npublic List<"+toCamelCase(1,str)+"> getAll(){\r\n");
+            append(file,"return "+toCamelCase(0,str)+"Service.getAll();\r\n}");
+            //生成添加
+
+
+            append(file,"\r\n@ResponseBody\r\n");
+            append(file,"@RequestMapping(\"/add_"+str+"\")\r\n");
+            append(file,"\r\npublic void add("+toCamelCase(1,str)+" "+toCamelCase(0,str)+"){\r\n");
+            append(file,toCamelCase(0,str)+"Service.insert("+toCamelCase(0,str)+");\r\n}\r\n}");
+
+
         }
     }
 
     //生成service
     private void handleService() {
+        //生成接口
         for (String str : tables) {
 
             String path=getRelativePath(this.serviceDir) + "\\";
@@ -421,9 +460,29 @@ public Creater artifactId(String name){
             File file = new File(path +"I" + toCamelCase(1, str) + "Service.java");
             setFile(file);
             append(file, "package " + artifactId+"."+projectName + ".service;\r\n");
-            append(file, "public interface I" + toCamelCase(1, str) + "Service {\r\n}");
+            append(file,"import "+artifactId+"."+projectName+".bean"+"."+toCamelCase(1,str)+";\r\n");
+            append(file, "import java.util.List;\r\n");
+            append(file, "public interface I" + toCamelCase(1, str) + "Service {\r\n");
+
+
+                //添加方法
+                append(file,"void insert("+toCamelCase(1,str)+" "+toCamelCase(0,str)+");\r\n");
+                //删除方法
+            for(FieldBean fieldBean:map.get(str).getFieldList()){
+                if(fieldBean.isPrimaryKey){
+                    append(file,"void delete("+fieldBean.getType()+"[] "+toCamelCase(0,fieldBean.getName())+"s);\r\n");
+                }
+            }
+            //更新方法
+            append(file,"void update("+toCamelCase(1,str)+" "+toCamelCase(0,str)+");\r\n");
+            //这里还要生成增删改查接口
+            append(file,"List<"+toCamelCase(1,str)+"> getAll();\r\n}" );
+
         }
 
+
+
+        //生成实现类
         for (String str : tables) {
 
             String path=getRelativePath(this.serviceDir) + "\\";
@@ -438,12 +497,39 @@ public Creater artifactId(String name){
                     "import org.springframework.transaction.annotation.Transactional;\r\n");
             append(file,"import "+artifactId+"."+projectName+".service.I"+toCamelCase(1,str)+"Service;\r\n");
             append(file,"import "+artifactId+"."+projectName+".dao."+toCamelCase(1,str)+"Mapper;\r\n");
-            append(file,"import org.springframework.beans.factory.annotation.Autowired;");
+            append(file,"import org.springframework.beans.factory.annotation.Autowired;\r\n");
+            append(file,"import java.util.List;\r\n");
+            append(file,"import "+artifactId+"."+projectName+".bean."+toCamelCase(1,str)+";\r\n");
             append(file, "@Service \r\n");
             append(file, "@Transactional \r\n");
             append(file, "public class " + toCamelCase(1, str) + "ServiceImpl implements I"+toCamelCase(1,str)+"Service {\r\n");
             append(file,"@Autowired\r\n");
-            append(file,toCamelCase(1,str)+"Mapper "+toCamelCase(0,str)+"Mapper;\r\n}");
+            append(file,toCamelCase(1,str)+"Mapper "+toCamelCase(0,str)+"Mapper;\r\n");
+
+            //生成删除
+            // TODO: 2018/7/13
+
+            for(FieldBean fieldBean:map.get(str).getFieldList()){
+                if(fieldBean.isPrimaryKey){
+                    append(file,"public void delete("+fieldBean.getType()+"[] "+toCamelCase(0,fieldBean.getName())+"s){\r\n");
+                    append(file,"for("+fieldBean.getType()+" "+fieldBean.getName()+":"+toCamelCase(0,fieldBean.getName())+"s){\r\n");
+                    append(file,toCamelCase(0,str)+"Mapper.deleteByPrimaryKey("+fieldBean.getName()+");\r\n}\r\n}");
+                }
+            }
+
+            //生成修改
+            append(file,"\r\npublic void update("+toCamelCase(1,str)+" "+toCamelCase(0,str)+"){\r\n");
+            append(file,toCamelCase(0,str)+"Mapper.updateByPrimaryKey("+toCamelCase(0,str)+");\r\n}");
+
+
+
+            //生成查询
+            append(file,"\r\npublic List<"+toCamelCase(1,str)+"> getAll(){\r\n");
+            append(file,"return "+toCamelCase(0,str)+"Mapper.selectAll();\r\n}");
+            //生成添加
+
+            append(file,"\r\npublic void insert("+toCamelCase(1,str)+" "+toCamelCase(0,str)+"){\r\n");
+            append(file,toCamelCase(0,str)+"Mapper.insert("+toCamelCase(0,str)+");\r\n}\r\n}");
         }
 
     }
