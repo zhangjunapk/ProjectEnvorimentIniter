@@ -26,6 +26,7 @@ public class Creater {
             "    <script type=\"text/javascript\" src=\"/static/js/jquery-1.12.4.js\"></script>\n" +
             "    <script type=\"text/javascript\" src=\"/static/js/layui.js\"></script>\n" +
             "    <link rel=\"stylesheet\" href=\"/static/css/layui.css\">\n" +
+            "<script type=\"text/javascript\" src=\"/static/js/jquery.form.js\"></script>" +
             "    <script type=\"text/javascript\" src=\"/static/js/layer.js\"></script>\n" +
             "    <link rel=\"stylesheet\" href=\"/static/css/layer.css\">\n" +
             "\n" +
@@ -517,7 +518,7 @@ public class Creater {
 
         //生成每个子页面的主页
 
-        String tableHeadBefore = "<div class=\"layui-form layui-border-box layui-table-view\" lay-filter=\"LAY-table-1\" style=\" height:332px;\">\n" +
+        String tableHeadBefore = "<button class=\"layui-btn\" onclick=\"add()\">添加</button>" +"<div class=\"layui-form layui-border-box layui-table-view\" lay-filter=\"LAY-table-1\" style=\" height:332px;\">\n" +
                 "    <div class=\"layui-table-box\">\n" +
                 "        <div class=\"layui-table-header\">\n" +
                 "            <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" class=\"layui-table\">\n" +
@@ -535,6 +536,8 @@ public class Creater {
                     "    <link rel=\"stylesheet\" href=\"/static/css/layui.css\">\n" +
                     "    <script type=\"text/javascript\" src=\"/static/js/layer.js\"></script>\n" +
                     "    <link rel=\"stylesheet\" href=\"/static/css/layer.css\">\n" +
+                    "\n" +
+                    "    <script type=\"text/javascript\" src=\"/static/js/jquery.form.js\"></script>"+
                     "\n" +
                     "    <script>\n" +
                     "function delete_item(id){\r\n" +
@@ -563,7 +566,56 @@ public class Creater {
                     "        }" +
                     "        $(function () {\n" +
                     "init()" +
-                    "        })\n";
+                    "        })\n"+"function modify(id) {\n" +
+                    "                    //弹窗打开窗口编辑\n" +
+                    "                    layer.open({\n" +
+                    "                        type: 2,\n" +
+                    "                        area: ['700px', '450px'],\n" +
+                    "                        fixed: false, //不固定\n" +
+                    "                        maxmin: true,\n" +
+                    "                        content: \"/jsp/edit_"+entry.getKey()+".jsp?id=\"+id,\n" +
+                    "                        btn: ['确定']\n" +
+                    "                        , yes: function (index, layero) {\n" +
+                    "                            var frame = \"#\" + layero.find('iframe')[0].id;\n" +
+                    "                            $(frame).contents().find(\"#form\").ajaxSubmit({\n" +
+                    "                                async: false,\n" +
+                    "                                success: (function () {\n" +
+                    "                                    alert(\"成功了\");\n" +
+                    "                                    layer.close(index);\n" +
+                    "                                      init();                 "+
+                    "                                })\n" +
+                    "                            });\n" +
+                    "                        }\n" +
+                    "                    });\n" +
+                    "\n" +
+                    "                }\n" +
+                    "\n" +
+                    "                function add() {\n" +
+                    "                    //弹窗打开添加页面\n" +
+                    "                    //iframe层-父子操作\n" +
+                    "\n" +
+                    "                    layer.open({\n" +
+                    "                        type: 2,\n" +
+                    "                        area: ['700px', '450px'],\n" +
+                    "                        fixed: false, //不固定\n" +
+                    "                        maxmin: true,\n" +
+                    "                        content: '/jsp/add_category.jsp',\n" +
+                    "                        btn: ['确定']\n" +
+                    "                        , yes: function (index, layero) {\n" +
+                    "                            var frame = \"#\" + layero.find('iframe')[0].id;\n" +
+                    "                            $(frame).contents().find(\"#form\").ajaxSubmit({\n" +
+                    "                                async: false,\n" +
+                    "                                success: (function () {\n" +
+                    "                                    alert(\"成功了\");\n" +
+                    "                                    layer.close(index);\n" +
+                    "                                     init();   "+
+                    "                                })\n" +
+                    "                            });\n" +
+                    "                        }\n" +
+                    "                    });\n" +
+                    "\n" +
+                    "                }";
+
 
             String tableHead = null;
             String baseChildJspHandleData = null;
@@ -594,7 +646,7 @@ public class Creater {
                 baseChildJspHandleData += "+\" <td data-field='9' align='center' data-off='true'>\"\n" +
                         "+ \"                       <div class='layui-table-cell laytable-cell-1-9'>\"\n" +
                         "+\"                               <a  class='layui-btn layui-btn-primary layui-btn-xs' lay-event='detail'>查看</a> \"\n" +
-                        " +\"                               <a class='layui-btn layui-btn-xs' lay-event='edit'>编辑</a> \"\n" +
+                        " +\"                               <a class='layui-btn layui-btn-xs' lay-event='edit' onclick=\\\"modify('\" + data.id + \"')\\\">编辑</a> \"\n" +
                         " +\"                               <a class='layui-btn layui-btn-danger layui-btn-xs' lay-event='del' href='javascript:void(0)' onclick=\\\"delete_item('\"+data." + getId(entry.getKey()) + "+\"')\\\"" + ">删除</a></div>\"\r\n" +
                         " +\"                   </td>\"\n" +
                         "+\"                </tr>\")}\r\n</script>\r\n</head>\"";
@@ -728,7 +780,7 @@ public class Creater {
         //生成每个子页面的添加页面
         for (Map.Entry<String, List<ClassBean>> entry : fieldMap.entrySet()) {
             //遍历每一个class
-            String item="";
+            String item = "";
             for (ClassBean classBean : entry.getValue()) {
                 //生成文件
                 File f = new File(getWebPath(webDirName) + "/jsp/add_" + convert(entry.getKey()) + ".jsp");
@@ -748,44 +800,41 @@ public class Creater {
                         "</head>";
                 before += "\n" +
                         "<body>\n" +
-                        "<form class=\"layui-form\" action=\"/" + entry.getKey() + "/add_" + entry.getKey() + ".action\">";
-                for(FieldBean fieldBean:classBean.getFieldList()) {
+                        "<form id='form' class=\"layui-form\" action=\"/" + entry.getKey() + "/add_" + entry.getKey() + ".action\">";
+                for (FieldBean fieldBean : classBean.getFieldList()) {
+
+                    if(isPrimary(entry.getKey(),fieldBean.getName())){continue;}
+
                     item += "<div class=\"layui-form-item\">\n" +
                             "        <label class=\"layui-form-label\">" + fieldBean.getAlias() + "</label>\n" +
                             "        <div class=\"layui-input-block\">\n" +
-                            "            <input type=\"text\" name=\""+fieldBean.getName()+"\" required=\"\" lay-verify=\"required\" placeholder=\"请输入"+fieldBean.getAlias()+"\" autocomplete=\"off\"\n" +
+                            "            <input type=\"text\" name=\"" + fieldBean.getName() + "\" required=\"\" lay-verify=\"required\" placeholder=\"请输入" + fieldBean.getAlias() + "\" autocomplete=\"off\"\n" +
                             "                   class=\"layui-input\">\n" +
                             "        </div>\n" +
                             "    </div>";
                 }
-                String ass="<div class=\"layui-form-item\">\n" +
-                        "        <div class=\"layui-input-block\">\n" +
-                        "            <button class=\"layui-btn\" lay-submit=\"\" lay-filter=\"formDemo\">立即提交</button>\n" +
-                        "            <button type=\"reset\" class=\"layui-btn layui-btn-primary\">重置</button>\n" +
-                        "        </div>\n" +
-                        "    </div>\n" +
-                        "</form>\n" +
+                String ass = "</form>\n" +
                         "</body>\n" +
                         "</html>\n";
-                append(f,before);
-                append(f,item);
-                append(f,ass);
+                append(f, before);
+                append(f, item);
+                append(f, ass);
             }
         }
 
         ///生成每个子页面的编辑页面
         for (Map.Entry<String, List<ClassBean>> entry : fieldMap.entrySet()) {
             //遍历每一个class
-            File f=new File(getWebPath(webDirName)+"/jsp/edit_"+entry.getKey()+".jsp");
+            File f = new File(getWebPath(webDirName) + "/jsp/edit_" + entry.getKey() + ".jsp");
             setFile(f);
 
             for (ClassBean classBean : entry.getValue()) {
                 // TODO: 2018/7/15
-                String body="\n" +
+                String body = "\n" +
                         "<body>\n" +
-                        "<form class=\"layui-form\" action=\"/category/modify_"+entry.getKey()+".action\" id=\"form\">\n" +
+                        "<form id='form' class=\"layui-form\" action=\"/category/modify_" + entry.getKey() + ".action\" id=\"form\">\n" +
                         "    <input type=\"hidden\" name=\"id\" value=\"\" id=\"id\"/>";
-                String before="<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\n" +
+                String before = "<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\n" +
                         "<html>\n" +
                         "<head>\n" +
                         "    <title>Title</title>\n" +
@@ -804,8 +853,8 @@ public class Creater {
                         "            },\n" +
                         "            dataType: \"json\",\n" +
                         "            success: function (data) {";
-                for(FieldBean fieldBean:classBean.getFieldList()) {
-                    handleData+="$(\"#"+fieldBean.getName()+"\").attr(\"value\",data."+fieldBean.getName()+");";
+                for (FieldBean fieldBean : classBean.getFieldList()) {
+                    handleData += "$(\"#" + fieldBean.getName() + "\").attr(\"value\",data." + fieldBean.getName() + ");";
 
 /**
  *  //往表单容器中添加
@@ -818,28 +867,26 @@ public class Creater {
  *     </script>
  */
 
-if(fieldBean.isPrimaryKey()){continue;}
-body+=" <div class=\"layui-form-item\">\n" +
-        "        <label class=\"layui-form-label\">"+fieldBean.getAlias()+"</label>\n" +
-        "        <div class=\"layui-input-block\">\n" +
-        "            <input id=\""+fieldBean.getName()+"\" type=\"text\" name=\"id\" required=\"\" lay-verify=\"required\" placeholder=\"请输入"+fieldBean.getAlias()+"\" autocomplete=\"off\"\n" +
-        "                   class=\"layui-input\">\n" +
-        "        </div>\n" +
-        "    </div>";
+                    if (isPrimary(entry.getKey(),fieldBean.getName())) {
+                        continue;
+                    }
+                    body += " <div class=\"layui-form-item\">\n" +
+                            "        <label class=\"layui-form-label\">" + fieldBean.getAlias() + "</label>\n" +
+                            "        <div class=\"layui-input-block\">\n" +
+                            "            <input id=\"" + fieldBean.getName() + "\" type=\"text\" name=\""+fieldBean.getName()+"\" required=\"\" lay-verify=\"required\" placeholder=\"请输入" + fieldBean.getAlias() + "\" autocomplete=\"off\"\n" +
+                            "                   class=\"layui-input\">\n" +
+                            "        </div>\n" +
+                            "    </div>";
                 }
-                body+=" <div class=\"layui-form-item\">\n" +
-                        "        <div class=\"layui-input-block\">\n" +
-                        "            <button class=\"layui-btn\" lay-submit=\"\" lay-filter=\"formDemo\">立即提交</button>\n" +
-                        "            <button type=\"reset\" class=\"layui-btn layui-btn-primary\">重置</button>\n" +
-                        "        </div>\n" +
-                        "    </div>\n" +
-                        "</form>\n" +
+                body += "</form>\n" +
                         "</body>\n" +
                         "</html>\n";
-                handleData+="</script>\r\n</head>";
-                append(f,before);
-                append(f,handleData);
-                append(f,body);
+
+
+                handleData += "}})\r\n</script>\r\n</head>";
+                append(f, before);
+                append(f, handleData);
+                append(f, body);
             }
         }
 
@@ -887,13 +934,12 @@ body+=" <div class=\"layui-form-item\">\n" +
                     append(file, toCamelCase(0, str) + "Service.delete(" + fieldBean.getName() + "s);\r\n}");
 
 
-
                     //生成根据id获得对象的方法
 
-                    append(file,"\r\n@ResponseBody");
+                    append(file, "\r\n@ResponseBody");
                     append(file, "@RequestMapping(\"/get_" + str + "_by_id\")\r\n");
-                    append(file,"public "+toCamelCase(1,str)+" get"+toCamelCase(1,str)+"ById("+fieldBean.getType()+" id){");
-                    append(file,"return "+toCamelCase(0,str)+"Service.get"+toCamelCase(1,str)+"(id);\r\n}");
+                    append(file, "public " + toCamelCase(1, str) + " get" + toCamelCase(1, str) + "ById(" + fieldBean.getType() + " id){");
+                    append(file, "return " + toCamelCase(0, str) + "Service.get" + toCamelCase(1, str) + "(id);\r\n}");
                 }
             }
 
@@ -955,7 +1001,7 @@ body+=" <div class=\"layui-form-item\">\n" +
                     append(file, "void delete(" + fieldBean.getType() + "[] " + toCamelCase(0, fieldBean.getName()) + "s);\r\n");
 
                     //根据id获得对象的方法
-                    append(file,toCamelCase(1,str)+" get"+toCamelCase(1,str)+"("+fieldBean.getType()+" id);");
+                    append(file, toCamelCase(1, str) + " get" + toCamelCase(1, str) + "(" + fieldBean.getType() + " id);");
                 }
             }
             //更新方法
@@ -964,7 +1010,6 @@ body+=" <div class=\"layui-form-item\">\n" +
             append(file, "List<" + toCamelCase(1, str) + "> getAll();\r\n");
 
             append(file, "PageInfo<" + toCamelCase(1, str) + "> getPage(Integer page,Integer pageNum);\r\n}");
-
 
 
         }
@@ -1008,8 +1053,8 @@ body+=" <div class=\"layui-form-item\">\n" +
                     //生成根据id获得对象的方法
 
 
-                    append(file,"public "+toCamelCase(1,str)+" get"+toCamelCase(1,str)+"("+fieldBean.getType()+" id){");
-                    append(file,"return "+toCamelCase(0,str)+"Mapper.selectByPrimaryKey(id);\r\n}");
+                    append(file, "public " + toCamelCase(1, str) + " get" + toCamelCase(1, str) + "(" + fieldBean.getType() + " id){");
+                    append(file, "return " + toCamelCase(0, str) + "Mapper.selectByPrimaryKey(id);\r\n}");
                 }
             }
 
@@ -1234,6 +1279,15 @@ body+=" <div class=\"layui-form-item\">\n" +
      * @return
      */
     public boolean isPrimary(String tableName, String fieldName) {
+        for(Map.Entry<String,ClassBean> entry:map.entrySet()){
+            if(entry.getKey().equals(tableName)){
+                for(FieldBean fieldBean:entry.getValue().getFieldList()){
+                    if(fieldName.equals(fieldBean.getName())){
+                        return fieldBean.isPrimaryKey();
+                    }
+                }
+            }
+        }
         return false;
     }
 }
