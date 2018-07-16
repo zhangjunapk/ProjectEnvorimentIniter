@@ -10,6 +10,7 @@ import org.dom4j.io.XMLWriter;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.util.*;
 
 /**
  * Created by ZhangJun on 2018/7/6.
@@ -18,6 +19,9 @@ import java.net.URISyntaxException;
 
 public class ProjectIniter {
     Class c;
+
+    Map<String,List<MenuMapping>> menuMap=new HashMap<>();
+    Map<String,List<Creater.ClassBean>> classBeanMap=new HashMap<>();
 
     String basePom="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\n" +
@@ -50,6 +54,9 @@ String webIniter;
 
     String artifactId;
 
+    String webDirName;
+
+
     String beanPackageName;
     String beanDirName;
     String controllerPackageName;
@@ -73,7 +80,9 @@ String webIniter;
         addModule();
         //生成配置类
         createConfig();
+
     }
+
 
     private void createConfig() throws IOException {
         mvcConfig="package "+ artifactId +"."+projectName+".config;\r\n"+"import org.springframework.context.annotation.Bean;\n" +
@@ -300,6 +309,21 @@ String webIniter;
     private void createClass() {
         //调用工具类生成bean/dao/service/controller
 
+        System.out.println(classBeanMap.size()+"      map中的大小");
+        for(Map.Entry<String,List<Creater.ClassBean>> entry:classBeanMap.entrySet()){
+
+            for(Creater.ClassBean classBean:entry.getValue()){
+                System.out.println(classBean.getAlias());
+
+                for(Creater.FieldBean fieldBean:classBean.getFieldList()){
+                    System.out.println("         "+fieldBean.getAlias()+":"+fieldBean.getName());
+
+                }
+
+            }
+
+            System.out.println("         "+entry.getValue().size()+" 大小");
+        }
         new Creater(druidDataSource.getUrl(),druidDataSource.getUsername(),druidDataSource.getPassword())
                 .allTable()
                 .setBeanPackage(beanPackageName)
@@ -312,9 +336,18 @@ String webIniter;
                 .controllerModule(controllerDirName)
                 .projectName(projectName)
                 .artifactId(artifactId)
+                .webDir(webDirName)
+                .menuMap(menuMap)
+                .fieldMap(classBeanMap)
                 .handle();
 
     }
+
+    public ProjectIniter menuMap(Map<String, List<MenuMapping>> menuMap){
+        this.menuMap=menuMap;
+        return this;
+    }
+
 
     private void addModule() {
         //往父项目中添加模块
@@ -364,10 +397,10 @@ String webIniter;
     }
 
     private void createModules() {
-        createModule(beanDirName,beanPackageName);
-        createModule(daoDirName,beanPackageName);
-        createModule(serviceDirName,servicePackageName);
-        createModule(controllerDirName,controllerPackageName);
+        createModule(false,beanDirName,beanPackageName);
+        createModule(false,daoDirName,beanPackageName);
+        createModule(false,serviceDirName,servicePackageName);
+        createModule(true,controllerDirName,controllerPackageName);
         try {
             addDependency(daoDirName,new String[]{beanDirName});
             addDependency(serviceDirName,new String[]{daoDirName});
@@ -411,7 +444,7 @@ String webIniter;
 
     }
 
-    private void createModule(String dir, String packageName) {
+    private void createModule(boolean isWar,String dir, String packageName) {
         //创建文件夹
         new File(getProjectPath()+"/"+dir+"/src/main/java").mkdirs();
         new File(getProjectPath()+"/"+dir+"/src/main/resources").mkdirs();
@@ -426,7 +459,7 @@ String webIniter;
             //写入
             append(file,basePom);
 
-            setParentAndSelf(dir);
+            setParentAndSelf(isWar,dir);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -434,7 +467,7 @@ String webIniter;
     }
 
     //为指定模块设置parent标签和<artifactId
-    private void setParentAndSelf(String dir) {
+    private void setParentAndSelf(boolean isWar,String dir) {
         //通过dom4j
         String pomPath=getPathByModuleName(dir)+"pom.xml";
 
@@ -461,6 +494,12 @@ String webIniter;
 
             rootElement.addElement("artifactId").setText(dir);
             rootElement.addElement("modelVersion").setText("4.0.0");
+
+            if(isWar){
+                //添加<package>war</package>
+                Element aPackage = rootElement.addElement("packaging");
+                aPackage.setText("war");
+            }
 
 
             try {
@@ -491,6 +530,9 @@ String webIniter;
         Service service= (Service) c.getAnnotation(Service.class);
 
         ParentProject parentProject= (ParentProject) c.getAnnotation(ParentProject.class);
+
+        WebDirName webDirName= (WebDirName) c.getAnnotation(WebDirName.class);
+        this.webDirName=webDirName.value();
 
         projectName=parentProject.name();
         projectVersion=parentProject.version();
@@ -555,4 +597,10 @@ String webIniter;
         return System.getProperty("user.dir")+"/";
     }
 
+    //key 表名
+    public ProjectIniter classBeanMap(Map<String,List<Creater.ClassBean>> classBeanMap) {
+        this.classBeanMap=classBeanMap;
+        // TODO: 2018/7/15
+        return this;
+    }
 }
