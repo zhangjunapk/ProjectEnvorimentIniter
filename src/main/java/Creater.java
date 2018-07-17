@@ -836,7 +836,7 @@ public class Creater {
                 // TODO: 2018/7/15
                 String body = "\n" +
                         "<body>\n" +
-                        "<form id='form' class=\"layui-form\" action=\"/category/modify_" + entry.getKey() + ".action\" id=\"form\">\n" +
+                        "<form id='form' class=\"layui-form\" action=\"/"+entry.getKey()+"/modify_" + entry.getKey() + ".action\" id=\"form\">\n" +
                         "    <input type=\"hidden\" name=\"id\" value=\"\" id=\"id\"/>";
                 String before = "<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\n" +
                         "<html>\n" +
@@ -1033,6 +1033,7 @@ public class Creater {
             append(file, "import org.springframework.stereotype.Service;\r\n" +
                     "import org.springframework.transaction.annotation.Transactional;\r\n");
             append(file, "import com.github.pagehelper.PageInfo;");
+            append(file, "import com.github.pagehelper.PageHelper;");
             append(file, "import " + artifactId + "." + projectName + ".service.I" + toCamelCase(1, str) + "Service;\r\n");
             append(file, "import " + artifactId + "." + projectName + ".dao." + toCamelCase(1, str) + "Mapper;\r\n");
             append(file, "import org.springframework.beans.factory.annotation.Autowired;\r\n");
