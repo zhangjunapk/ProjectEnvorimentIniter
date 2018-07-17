@@ -16,7 +16,7 @@ import java.util.Map;
  * @author 张君
  */
 public class Creater {
-    private Map<String, List<ClassBean>> fieldMap = new HashMap<>();
+    private Map<String,ClassBean> fieldMap = new HashMap<>();
 
 
     private String indexBefore = "<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\n" +
@@ -194,7 +194,7 @@ public class Creater {
         return this;
     }
 
-    public Creater fieldMap(Map<String, List<ClassBean>> fieldMap) {
+    public Creater fieldMap(Map<String,ClassBean> fieldMap) {
         this.fieldMap = fieldMap;
         return this;
     }
@@ -524,7 +524,7 @@ public class Creater {
                 "            <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" class=\"layui-table\">\n" +
                 "                <thead>";
 
-        for (Map.Entry<String, List<ClassBean>> entry : fieldMap.entrySet()) {
+        for (Map.Entry<String, ClassBean> entry : map.entrySet()) {
             File f = new File(getWebPath(webDirName) + "/jsp/" + entry.getKey() + ".jsp");
             setFile(f);
             String baseChildJspBefore = "<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>\n" +
@@ -553,12 +553,12 @@ public class Creater {
                     "function init()\r\n{getPage(1,10)}\r\n" +
                     "function getPage(page,pageNum){\n" +
                     "            $.ajax({\n" +
-                    "                url: \"/category/get_category.action\",\n" +
+                    "                url: \"/"+entry.getKey()+"/get_page_"+entry.getKey()+".action\",\n" +
                     "data:{page:page,pageNum:pageNum},\r\n" +
                     "                dataType: \"json\",\n" +
                     "                success: (function (data) {\n" +
                     "$(\"#container\").html(\"\")\r\n" +
-                    "                    $(data).each(function () {\n" +
+                    "                    $(data.list).each(function () {\n" +
                     "                        handleData(this);\n" +
                     "                    })\n" +
                     "                })\n" +
@@ -599,7 +599,7 @@ public class Creater {
                     "                        area: ['700px', '450px'],\n" +
                     "                        fixed: false, //不固定\n" +
                     "                        maxmin: true,\n" +
-                    "                        content: '/jsp/add_category.jsp',\n" +
+                    "                        content: '/jsp/add_"+entry.getKey()+".jsp',\n" +
                     "                        btn: ['确定']\n" +
                     "                        , yes: function (index, layero) {\n" +
                     "                            var frame = \"#\" + layero.find('iframe')[0].id;\n" +
@@ -619,7 +619,8 @@ public class Creater {
 
             String tableHead = null;
             String baseChildJspHandleData = null;
-            for (ClassBean classBean : entry.getValue()) {
+
+            ClassBean classBean=entry.getValue();
 
 
                 tableHead = " <tr>\n" +
@@ -634,9 +635,9 @@ public class Creater {
 
 
                     tableHead += "<th >\n" +
-                            "                        <div class='layui-table-cell laytable-cell-1-username'><span>" + fieldBean.getAlias() + "</span></div>\n" +
+                            "                        <div class='layui-table-cell laytable-cell-1-username'><span>" +getAlias(entry.getKey(),fieldBean.getName()) + "</span></div>\n" +
                             "                    </th>";
-                    baseChildJspHandleData += "+\"<td ><div class='layui-table-cell laytable-cell-1-sex'>\"+data." + fieldBean.getName() + "+\"</div></td>\"";
+                    baseChildJspHandleData += "+\"<td ><div class='layui-table-cell laytable-cell-1-sex'>\"+data." + toCamelCase(0,fieldBean.getName()) + "+\"</div></td>\"";
                 }
                 tableHead += "\n" +
                         "                </tr>\n" +
@@ -772,16 +773,18 @@ public class Creater {
                 append(f, tableHeadBefore);
                 append(f, tableHead);
                 append(f, ass);
-            }
+
 
 
         }
 
         //生成每个子页面的添加页面
-        for (Map.Entry<String, List<ClassBean>> entry : fieldMap.entrySet()) {
+        for (Map.Entry<String,ClassBean> entry : map.entrySet()) {
             //遍历每一个class
             String item = "";
-            for (ClassBean classBean : entry.getValue()) {
+
+            ClassBean classBean=entry.getValue();
+
                 //生成文件
                 File f = new File(getWebPath(webDirName) + "/jsp/add_" + convert(entry.getKey()) + ".jsp");
                 setFile(f);
@@ -806,9 +809,9 @@ public class Creater {
                     if(isPrimary(entry.getKey(),fieldBean.getName())){continue;}
 
                     item += "<div class=\"layui-form-item\">\n" +
-                            "        <label class=\"layui-form-label\">" + fieldBean.getAlias() + "</label>\n" +
+                            "        <label class=\"layui-form-label\">" +getAlias(entry.getKey(),fieldBean.getName()) + "</label>\n" +
                             "        <div class=\"layui-input-block\">\n" +
-                            "            <input type=\"text\" name=\"" + fieldBean.getName() + "\" required=\"\" lay-verify=\"required\" placeholder=\"请输入" + fieldBean.getAlias() + "\" autocomplete=\"off\"\n" +
+                            "            <input type=\"text\" name=\"" + toCamelCase(0,fieldBean.getName()) + "\" required=\"\" lay-verify=\"required\" placeholder=\"请输入" + getAlias(entry.getKey(),fieldBean.getName()) + "\" autocomplete=\"off\"\n" +
                             "                   class=\"layui-input\">\n" +
                             "        </div>\n" +
                             "    </div>";
@@ -820,15 +823,16 @@ public class Creater {
                 append(f, item);
                 append(f, ass);
             }
-        }
+
 
         ///生成每个子页面的编辑页面
-        for (Map.Entry<String, List<ClassBean>> entry : fieldMap.entrySet()) {
+        for(Map.Entry<String, ClassBean> entry : map.entrySet()) {
             //遍历每一个class
             File f = new File(getWebPath(webDirName) + "/jsp/edit_" + entry.getKey() + ".jsp");
             setFile(f);
 
-            for (ClassBean classBean : entry.getValue()) {
+            ClassBean classBean=entry.getValue();
+
                 // TODO: 2018/7/15
                 String body = "\n" +
                         "<body>\n" +
@@ -871,9 +875,9 @@ public class Creater {
                         continue;
                     }
                     body += " <div class=\"layui-form-item\">\n" +
-                            "        <label class=\"layui-form-label\">" + fieldBean.getAlias() + "</label>\n" +
+                            "        <label class=\"layui-form-label\">" +getAlias(entry.getKey(),fieldBean.getName()) + "</label>\n" +
                             "        <div class=\"layui-input-block\">\n" +
-                            "            <input id=\"" + fieldBean.getName() + "\" type=\"text\" name=\""+fieldBean.getName()+"\" required=\"\" lay-verify=\"required\" placeholder=\"请输入" + fieldBean.getAlias() + "\" autocomplete=\"off\"\n" +
+                            "            <input id=\"" + toCamelCase(0,fieldBean.getName()) + "\" type=\"text\" name=\""+toCamelCase(0,fieldBean.getName())+"\" required=\"\" lay-verify=\"required\" placeholder=\"请输入" + getAlias(entry.getKey(),fieldBean.getName()) + "\" autocomplete=\"off\"\n" +
                             "                   class=\"layui-input\">\n" +
                             "        </div>\n" +
                             "    </div>";
@@ -888,9 +892,9 @@ public class Creater {
                 append(f, handleData);
                 append(f, body);
             }
-        }
 
-    }
+
+}
 
     //生成controller
     private void handleController() {
@@ -1073,6 +1077,7 @@ public class Creater {
 
             //生成查询分页
             append(file, "public PageInfo<" + toCamelCase(1, str) + "> getPage(Integer page,Integer pageNum){\r\n");
+            append(file," PageHelper.startPage(page,pageNum);\r\n");
             append(file, "List<" + toCamelCase(1, str) + "> all=" + toCamelCase(0, str) + "Mapper.selectAll();\r\n");
             append(file, "return new PageInfo<" + toCamelCase(1, str) + ">(all);\r\n}\r\n}");
 
@@ -1260,14 +1265,14 @@ public class Creater {
      */
     private String convert(String name) {
 
-        System.out.println(name + "    需要转换成下划线");
+        /*System.out.println(name + "    需要转换成下划线");
 
         for (int i = 0; i < name.length(); i++) {
             if (name.substring(i, i + 1).equals(name.substring(i, i + 1).toUpperCase())) {
                 //说明当前字符是大写的
                 name = name.substring(0, i) + "_" + name.substring(i, i + 1).toLowerCase() + name.substring(i + 1);
             }
-        }
+        }*/
         return name;
     }
 
@@ -1290,4 +1295,22 @@ public class Creater {
         }
         return false;
     }
+
+    /**
+     * 获得指定表中指定字段的别名
+     * @return
+     */
+    public String getAlias(String tableName,String fieldName){
+        for(Map.Entry<String,ClassBean> entry:fieldMap.entrySet()){
+            if(entry.getKey().equals(tableName)){
+                for(FieldBean fieldBean:entry.getValue().getFieldList()){
+                    if(fieldBean.getName().equals(fieldName)){
+                        return fieldBean.getAlias();
+                    }
+                }
+            }
+        }
+        return toCamelCase(1,fieldName);
+    }
+
 }

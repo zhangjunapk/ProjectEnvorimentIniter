@@ -24,10 +24,16 @@ public class Config {
         menuMappings.add(new MenuMapping("collection", "收藏管理"));
         menuMappings.add(new MenuMapping("user", "用户管理"));
         menuMappings.add(new MenuMapping("category", "分类管理"));
+        menuMappings.add(new MenuMapping("give_coin_history", "给币管理"));
+        menuMappings.add(new MenuMapping("play_history", "播放历史管理"));
+        menuMappings.add(new MenuMapping("student", "学生管理"));
+        menuMappings.add(new MenuMapping("tag_set", "标签管理"));
+        menuMappings.add(new MenuMapping("user", "用户管理"));
+
         menuMap.put("用户中心", menuMappings);
 
 
-        Map<String, List<Creater.ClassBean>> fieldMap = new HashMap<>();
+        Map<String, Creater.ClassBean> fieldMap = new HashMap<>();
         List<Creater.ClassBean> cList = new ArrayList<>();
         List<Creater.FieldBean> fieldBeans = new ArrayList<>();
         fieldBeans.add(new Creater.FieldBean(false, null, "id", "ID"));
@@ -37,7 +43,7 @@ public class Config {
         classBean.setAlias("分类管理");
         classBean.setFieldList(fieldBeans);
         cList.add(classBean);
-        fieldMap.put("category", cList);
+        fieldMap.put("category", classBean);
 
         new ProjectIniter(Config.class).menuMap(menuMap).classBeanMap(fieldMap).init();
     }

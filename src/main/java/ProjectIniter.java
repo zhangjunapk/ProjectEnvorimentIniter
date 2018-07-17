@@ -21,7 +21,7 @@ public class ProjectIniter {
     Class c;
 
     Map<String,List<MenuMapping>> menuMap=new HashMap<>();
-    Map<String,List<Creater.ClassBean>> classBeanMap=new HashMap<>();
+    Map<String,Creater.ClassBean> classBeanMap=new HashMap<>();
 
     String basePom="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\n" +
@@ -310,19 +310,15 @@ String webIniter;
         //调用工具类生成bean/dao/service/controller
 
         System.out.println(classBeanMap.size()+"      map中的大小");
-        for(Map.Entry<String,List<Creater.ClassBean>> entry:classBeanMap.entrySet()){
+        for(Map.Entry<String,Creater.ClassBean> entry:classBeanMap.entrySet()){
 
-            for(Creater.ClassBean classBean:entry.getValue()){
-                System.out.println(classBean.getAlias());
+                System.out.println(entry.getValue().getAlias());
 
-                for(Creater.FieldBean fieldBean:classBean.getFieldList()){
+                for(Creater.FieldBean fieldBean:entry.getValue().getFieldList()){
                     System.out.println("         "+fieldBean.getAlias()+":"+fieldBean.getName());
 
                 }
 
-            }
-
-            System.out.println("         "+entry.getValue().size()+" 大小");
         }
         new Creater(druidDataSource.getUrl(),druidDataSource.getUsername(),druidDataSource.getPassword())
                 .allTable()
@@ -598,7 +594,7 @@ String webIniter;
     }
 
     //key 表名
-    public ProjectIniter classBeanMap(Map<String,List<Creater.ClassBean>> classBeanMap) {
+    public ProjectIniter classBeanMap(Map<String,Creater.ClassBean> classBeanMap) {
         this.classBeanMap=classBeanMap;
         // TODO: 2018/7/15
         return this;
